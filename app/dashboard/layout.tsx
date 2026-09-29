@@ -32,6 +32,12 @@ export default async function DashboardLayout({
 
           <div className="flex items-center gap-2 sm:gap-3">
             <Link
+              href="/dashboard/attendance"
+              className="rounded-xl px-3 py-1.5 text-sm font-semibold text-brand transition-colors hover:bg-brand-soft"
+            >
+              {t.attendance.nav}
+            </Link>
+            <Link
               href="/dashboard/settings"
               className="rounded-xl px-3 py-1.5 text-sm font-semibold text-brand transition-colors hover:bg-brand-soft"
             >

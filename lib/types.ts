@@ -18,3 +18,13 @@ export type Submission = {
   recommendations: string | null;
   created_at: string;
 };
+
+/** One attendee signing in for a session. */
+export type Attendance = {
+  id: string;
+  program_name: string;
+  attended_on: string;
+  name: string;
+  department: string;
+  created_at: string;
+};
