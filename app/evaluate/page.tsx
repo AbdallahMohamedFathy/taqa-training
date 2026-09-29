@@ -7,7 +7,15 @@ import EvaluationForm from "./EvaluationForm";
 // rest of the header the trainee still fills in themselves.
 export default async function EvaluatePage() {
   const supabase = await createClient();
-  const { data } = await supabase.from("programs").select("*").order("name");
+  const { data, error } = await supabase
+    .from("programs")
+    .select("*")
+    .order("name");
+
+  // Swallowing this once cost a whole debugging session: a misconfigured
+  // Supabase URL in production failed the query, and the empty result was
+  // indistinguishable from "HR has not added any courses".
+  if (error) throw error;
 
   return (
     <>

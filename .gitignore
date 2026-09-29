@@ -42,3 +42,6 @@ next-env.d.ts
 
 # keep the template (placeholders only); real .env.local stays ignored
 !.env.local.example
+
+.vercel
+.env*
