@@ -28,3 +28,7 @@ create policy hr_select_attendance on public.attendance
 drop policy if exists hr_delete_attendance on public.attendance;
 create policy hr_delete_attendance on public.attendance
   for delete to authenticated using (true);
+
+-- PostgREST caches the schema; without this the API can answer PGRST205
+-- ("table not found in schema cache") even though the table exists.
+notify pgrst, 'reload schema';

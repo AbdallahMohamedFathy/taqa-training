@@ -3,6 +3,7 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useLang } from "@/components/LangProvider";
+import { cleanText } from "@/lib/clean-text";
 import { createClient } from "@/lib/supabase/client";
 import type { Program } from "@/lib/types";
 
@@ -20,7 +21,10 @@ export default function AttendanceForm({ programs }: { programs: Program[] }) {
     event.preventDefault();
     setError(null);
 
-    if (!programName || !name.trim() || !department.trim()) {
+    const cleanName = cleanText(name);
+    const cleanDepartment = cleanText(department);
+
+    if (!programName || !cleanName || !cleanDepartment) {
       setError(t.attendance.errFields);
       return;
     }
@@ -30,8 +34,8 @@ export default function AttendanceForm({ programs }: { programs: Program[] }) {
       .from("attendance")
       .insert({
         program_name: programName,
-        name: name.trim(),
-        department: department.trim(),
+        name: cleanName,
+        department: cleanDepartment,
       });
 
     if (insertError) {

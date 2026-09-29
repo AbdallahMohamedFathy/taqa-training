@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useLang } from "@/components/LangProvider";
 import { programKey } from "@/lib/program-key";
+import { cleanText } from "@/lib/clean-text";
 import { createClient } from "@/lib/supabase/client";
 import type { Program } from "@/lib/types";
 
@@ -22,7 +23,7 @@ export default function ProgramCatalog({
 
   async function add(event: React.FormEvent) {
     event.preventDefault();
-    const trimmed = name.trim();
+    const trimmed = cleanText(name);
     if (!trimmed) return;
 
     // Catch a near-duplicate before the database's exact-match unique index does.

@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { useLang } from "@/components/LangProvider";
 import { RATING_MAX, RATING_MIN, SECTIONS, ALL_ITEMS } from "@/lib/form-schema";
+import { cleanText } from "@/lib/clean-text";
 import { createClient } from "@/lib/supabase/client";
 import type { Program, Ratings } from "@/lib/types";
 
@@ -88,7 +89,7 @@ export default function EvaluationForm({
       return;
     }
 
-    if (!traineeName.trim()) {
+    if (!cleanText(traineeName)) {
       setNameMissing(true);
       setError(t.form.errTraineeName);
       nameRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -99,8 +100,8 @@ export default function EvaluationForm({
     const { error: insertError } = await onSubmit({
       program_name: programName.trim(),
       program_date: programDate,
-      instructors: instructors.map((i) => i.trim()).filter(Boolean),
-      trainee_name: traineeName.trim(),
+      instructors: instructors.map(cleanText).filter(Boolean),
+      trainee_name: cleanText(traineeName),
       ratings,
       recommendations: recommendations.trim() || null,
     });

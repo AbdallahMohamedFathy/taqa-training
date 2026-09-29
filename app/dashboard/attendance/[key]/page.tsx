@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import AttendanceSheet from "@/components/AttendanceSheet";
+import AttendeeList from "@/components/AttendeeList";
 import PrintButton from "@/components/PrintButton";
 import { groupSessions } from "@/lib/attendance";
 import { getT } from "@/lib/i18n-server";
@@ -37,6 +38,8 @@ export default async function AttendanceSheetPage({
         </Link>
         <PrintButton label={t.attendance.printSheet} />
       </div>
+
+      <AttendeeList session={session} />
 
       <div className="mt-6 overflow-x-auto">
         <AttendanceSheet session={session} t={t} />
