@@ -50,8 +50,10 @@ export default function EvaluationForm({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [missing, setMissing] = useState<Set<string>>(new Set());
+  const [nameMissing, setNameMissing] = useState(false);
   const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const headerRef = useRef<HTMLElement | null>(null);
+  const nameRef = useRef<HTMLLabelElement | null>(null);
 
   const answered = ALL_ITEMS.filter((i) => ratings[i.key] !== undefined).length;
 
@@ -86,12 +88,19 @@ export default function EvaluationForm({
       return;
     }
 
+    if (!traineeName.trim()) {
+      setNameMissing(true);
+      setError(t.form.errTraineeName);
+      nameRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+      return;
+    }
+
     setSubmitting(true);
     const { error: insertError } = await onSubmit({
       program_name: programName.trim(),
       program_date: programDate,
       instructors: instructors.map((i) => i.trim()).filter(Boolean),
-      trainee_name: traineeName.trim() || null,
+      trainee_name: traineeName.trim(),
       ratings,
       recommendations: recommendations.trim() || null,
     });
@@ -261,17 +270,23 @@ export default function EvaluationForm({
             className="mt-4 w-full rounded-xl border border-line bg-background px-4 py-3 leading-relaxed outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
           />
 
-          <label className="mt-5 block">
-            <span className="text-sm font-medium">
-              {t.form.traineeName}{" "}
-              <span className="font-normal text-muted">{t.form.optional}</span>
-            </span>
+          <label ref={nameRef} className="mt-5 block scroll-mt-4">
+            <span className="text-sm font-medium">{t.form.traineeName}</span>
             <input
               type="text"
               value={traineeName}
-              onChange={(e) => setTraineeName(e.target.value)}
-              className="field mt-2"
+              onChange={(e) => {
+                setTraineeName(e.target.value);
+                setNameMissing(false);
+              }}
+              aria-invalid={nameMissing}
+              className={`field mt-2 ${nameMissing ? "border-danger" : ""}`}
             />
+            {nameMissing && (
+              <span className="mt-2 block text-sm font-medium text-danger">
+                {t.form.errTraineeName}
+              </span>
+            )}
           </label>
         </section>
 

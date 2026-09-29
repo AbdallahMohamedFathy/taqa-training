@@ -98,6 +98,7 @@ const ar = {
     submitting: "جارِ الإرسال…",
     answered: (n: number, total: number) => `تم الرد على ${n} من ${total} بند`,
     errHeader: "من فضلك اكتب اسم البرنامج وتاريخه.",
+    errTraineeName: "من فضلك اكتب اسمك.",
     errItems: (n: number) => `من فضلك قيّم كل البنود. باقي ${n} بند.`,
     errItemRequired: "لازم تختار درجة لهذا البند.",
     errSubmit: "حصل خطأ أثناء الإرسال. من فضلك حاول مرة تانية.",
@@ -228,6 +229,7 @@ const en: typeof ar = {
     submitting: "Submitting…",
     answered: (n: number, total: number) => `${n} of ${total} items answered`,
     errHeader: "Please fill in the program name and date.",
+    errTraineeName: "Please enter your name.",
     errItems: (n: number) =>
       `Please rate every item. ${n} ${n === 1 ? "item is" : "items are"} still missing.`,
     errItemRequired: "This item needs a rating.",
