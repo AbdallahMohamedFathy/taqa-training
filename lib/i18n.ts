@@ -80,10 +80,9 @@ const ar = {
     subtitle: "Training Program Evaluation Form",
     programName: "اسم البرنامج",
     choosePlaceholder: "— اختر الدورة —",
-    otherOption: "أخرى (اكتبها بنفسك)",
-    otherPlaceholder: "اكتب اسم الدورة",
-    noProgramsYet:
-      "الموارد البشرية لسه ما ضافتش أسماء الدورات. اكتب اسم دورتك بنفسك.",
+    noProgramsTitle: "لسه مفيش دورات متاحة",
+    noProgramsBody:
+      "الموارد البشرية لسه ما ضافتش أسماء الدورات، فمش هينفع تبعت التقييم دلوقتي. كلّمهم وهما هيضيفوا دورتك.",
     programDate: "تاريخ البرنامج",
     instructorName: "اسم المدرب",
     optional: "(اختياري)",
@@ -211,10 +210,9 @@ const en: typeof ar = {
     subtitle: "نموذج تقييم برنامج التدريب",
     programName: "Program Name",
     choosePlaceholder: "— Choose your course —",
-    otherOption: "Other (type it in)",
-    otherPlaceholder: "Type the course name",
-    noProgramsYet:
-      "HR has not added any course names yet. Please type your course name.",
+    noProgramsTitle: "No courses available yet",
+    noProgramsBody:
+      "HR has not added any course names yet, so the form cannot be submitted. Please contact them and they will add your course.",
     programDate: "Program Date",
     instructorName: "Instructor Name",
     optional: "(optional)",

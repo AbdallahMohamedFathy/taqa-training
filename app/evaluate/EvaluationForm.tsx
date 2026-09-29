@@ -30,9 +30,6 @@ const saveToSupabase: SubmitHandler = async (payload) => {
   return { error };
 };
 
-/** Sentinel for the escape hatch when HR has not listed the trainee's course. */
-const OTHER = "__other__";
-
 export default function EvaluationForm({
   programs,
   onSubmit = saveToSupabase,
@@ -44,9 +41,7 @@ export default function EvaluationForm({
   const { lang, t } = useLang();
   const ar = lang === "ar";
 
-  const [picked, setPicked] = useState(programs.length ? "" : OTHER);
-  const [otherName, setOtherName] = useState("");
-  const programName = picked === OTHER ? otherName : picked;
+  const [programName, setProgramName] = useState("");
   const [programDate, setProgramDate] = useState("");
   const [instructors, setInstructors] = useState(["", "", ""]);
   const [ratings, setRatings] = useState<Ratings>({});
@@ -110,6 +105,26 @@ export default function EvaluationForm({
     router.push("/evaluate/thank-you");
   }
 
+  // The course must come from HR's list, so with an empty list there is
+  // nothing valid to submit. Say so plainly instead of showing a dead form.
+  if (programs.length === 0) {
+    return (
+      <main className="mx-auto flex w-full max-w-lg flex-1 items-center px-4 py-16">
+        <div className="card w-full p-8 text-center sm:p-10">
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-soft text-3xl">
+            📋
+          </div>
+          <h1 className="mt-5 text-xl font-extrabold">
+            {t.form.noProgramsTitle}
+          </h1>
+          <p className="mt-3 leading-relaxed text-muted">
+            {t.form.noProgramsBody}
+          </p>
+        </div>
+      </main>
+    );
+  }
+
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
       <header ref={headerRef} className="scroll-mt-4 card overflow-hidden">
@@ -127,34 +142,17 @@ export default function EvaluationForm({
           <label className="block">
             <span className="text-sm font-medium">{t.form.programName}</span>
             <select
-              value={picked}
-              onChange={(e) => setPicked(e.target.value)}
+              value={programName}
+              onChange={(e) => setProgramName(e.target.value)}
               className={headerInputClass}
             >
-              {programs.length > 0 && (
-                <option value="">{t.form.choosePlaceholder}</option>
-              )}
+              <option value="">{t.form.choosePlaceholder}</option>
               {programs.map((program) => (
                 <option key={program.id} value={program.name}>
                   {program.name}
                 </option>
               ))}
-              <option value={OTHER}>{t.form.otherOption}</option>
             </select>
-            {picked === OTHER && (
-              <input
-                type="text"
-                value={otherName}
-                onChange={(e) => setOtherName(e.target.value)}
-                placeholder={t.form.otherPlaceholder}
-                className={headerInputClass}
-              />
-            )}
-            {programs.length === 0 && (
-              <p className="mt-2 text-xs leading-relaxed text-muted">
-                {t.form.noProgramsYet}
-              </p>
-            )}
           </label>
 
           <label className="block">
