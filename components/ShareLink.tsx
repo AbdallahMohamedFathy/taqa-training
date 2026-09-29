@@ -34,7 +34,7 @@ export default function ShareLink() {
         <button
           type="button"
           onClick={copy}
-          className="shrink-0 rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-hover"
+          className="btn-primary shrink-0 px-5 py-2.5"
         >
           {copied ? t.share.copied : t.share.copy}
         </button>

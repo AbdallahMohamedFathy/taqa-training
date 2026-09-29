@@ -17,7 +17,9 @@ export default async function LoginPage({ searchParams }: PageProps<"/login">) {
       </div>
       <main className="mx-auto flex w-full max-w-md flex-1 items-center px-4 pb-16">
         <div className="w-full">
-          <h1 className="text-2xl font-bold">{t.login.title}</h1>
+          <h1 className="gradient-text text-3xl font-extrabold tracking-tight">
+            {t.login.title}
+          </h1>
           <p className="mt-1 text-sm text-muted">{t.login.subtitle}</p>
           <LoginForm redirectTo={redirectTo} />
         </div>

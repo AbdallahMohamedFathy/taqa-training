@@ -66,7 +66,9 @@ export default function ProgramCatalog({
 
   return (
     <>
-      <h1 className="mt-3 text-2xl font-bold">{t.catalog.title}</h1>
+      <h1 className="gradient-text mt-3 text-3xl font-extrabold tracking-tight">
+        {t.catalog.title}
+      </h1>
       <p className="mt-1 text-sm leading-relaxed text-muted">
         {t.catalog.hint}
       </p>
@@ -80,12 +82,12 @@ export default function ProgramCatalog({
             setError(null);
           }}
           placeholder={t.catalog.addPlaceholder}
-          className="min-w-0 flex-1 rounded-xl border border-line bg-surface px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+          className="field min-w-0 flex-1"
         />
         <button
           type="submit"
           disabled={busy || !name.trim()}
-          className="shrink-0 rounded-xl bg-brand px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-hover disabled:opacity-50"
+          className="btn-primary shrink-0 px-6 py-3"
         >
           {busy ? t.catalog.adding : t.catalog.add}
         </button>
@@ -98,7 +100,7 @@ export default function ProgramCatalog({
       )}
 
       {programs.length === 0 ? (
-        <div className="mt-6 rounded-2xl border border-dashed border-line bg-surface p-8 text-center text-sm text-muted">
+        <div className="mt-6 rounded-3xl border-2 border-dashed border-line bg-white/45 p-10 text-center text-sm text-muted">
           {t.catalog.empty}
         </div>
       ) : (

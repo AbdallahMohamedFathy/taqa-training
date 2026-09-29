@@ -18,7 +18,9 @@ export default async function ProgramList({
     <>
       <div className="flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold">{t.list.title}</h1>
+          <h1 className="gradient-text text-3xl font-extrabold tracking-tight">
+            {t.list.title}
+          </h1>
           <p className="mt-1 text-sm text-muted">{t.list.hint}</p>
         </div>
         <ExportExcelButton groups={groups} />
@@ -35,7 +37,7 @@ export default async function ProgramList({
         <div className="mt-6 overflow-hidden card">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[40rem] text-start">
-              <thead className="border-b border-line bg-background text-xs text-muted">
+              <thead className="border-b border-line bg-white/40 text-xs font-semibold text-muted">
                 <tr>
                   <th className="px-5 py-3 font-medium sm:px-6">
                     {t.list.colProgram}
@@ -51,11 +53,11 @@ export default async function ProgramList({
                 {groups.map((group) => {
                   const average = overallAverage(group.submissions);
                   return (
-                    <tr key={group.key} className="hover:bg-background">
+                    <tr key={group.key} className="transition-colors hover:bg-white/55">
                       <td className="px-5 py-4 sm:px-6">
                         <Link
                           href={`/dashboard/programs/${encodeURIComponent(group.key)}`}
-                          className="font-medium text-brand hover:underline"
+                          className="font-semibold text-brand hover:underline"
                         >
                           {group.name}
                         </Link>

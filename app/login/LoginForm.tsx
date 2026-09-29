@@ -47,7 +47,7 @@ export default function LoginForm({ redirectTo }: { redirectTo: string }) {
           dir="ltr"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-2 w-full rounded-xl border border-line bg-background px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+          className="field mt-2"
         />
       </label>
 
@@ -59,7 +59,7 @@ export default function LoginForm({ redirectTo }: { redirectTo: string }) {
           dir="ltr"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mt-2 w-full rounded-xl border border-line bg-background px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+          className="field mt-2"
         />
       </label>
 
@@ -72,7 +72,7 @@ export default function LoginForm({ redirectTo }: { redirectTo: string }) {
       <button
         type="submit"
         disabled={submitting}
-        className="w-full rounded-xl bg-brand px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-hover disabled:opacity-60"
+        className="btn-primary w-full px-6 py-3"
       >
         {submitting ? t.login.submitting : t.login.submit}
       </button>

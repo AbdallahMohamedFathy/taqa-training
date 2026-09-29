@@ -37,7 +37,9 @@ export default async function ProgramResults({
     <>
       <div className="mt-3 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold sm:text-3xl">{group.name}</h1>
+          <h1 className="gradient-text text-3xl font-extrabold tracking-tight sm:text-4xl">
+            {group.name}
+          </h1>
           <p className="mt-1 text-sm text-muted">
             <bdi className="ltr-nums">{dateRange}</bdi>
             {group.instructors.length > 0 &&
@@ -57,7 +59,7 @@ export default async function ProgramResults({
         <div className="card p-6">
           <p className="text-sm text-muted">{t.results.overallAverage}</p>
           {/* bdi keeps "7.4 / 10" reading left-to-right without un-aligning it. */}
-          <p className="mt-1 text-5xl font-bold">
+          <p className="mt-1 text-5xl font-extrabold tracking-tight">
             <bdi>
               {formatScore(overall)}
               <span className="text-xl font-medium text-muted"> / 10</span>
@@ -67,7 +69,7 @@ export default async function ProgramResults({
         </div>
         <div className="card p-6">
           <p className="text-sm text-muted">{t.results.responseCount}</p>
-          <p className="mt-1 text-5xl font-bold">
+          <p className="mt-1 text-5xl font-extrabold tracking-tight">
             <bdi>{submissions.length}</bdi>
           </p>
         </div>
@@ -98,7 +100,7 @@ export default async function ProgramResults({
             key={section.key}
             className="overflow-hidden card"
           >
-            <h3 className="border-b border-line bg-brand-soft px-5 py-3 font-bold text-brand-deep sm:px-6">
+            <h3 className="border-b border-line bg-brand-soft px-5 py-3.5 font-bold text-brand-deep sm:px-6">
               {ar ? section.ar : section.en}
             </h3>
             <div className="divide-y divide-line px-5 sm:px-6">
@@ -118,9 +120,9 @@ export default async function ProgramResults({
 
       {notes.length > 0 && (
         <section className="mt-6 card p-5 sm:p-6">
-          <h2 className="text-lg font-bold">
+          <h2 className="flex flex-wrap items-baseline gap-x-2 text-lg font-bold">
             {t.results.recommendations}
-            <bdi className="ltr-nums ms-2 text-sm font-medium text-muted">
+            <bdi className="ltr-nums text-sm font-medium text-muted">
               ({notes.length})
             </bdi>
           </h2>
@@ -128,7 +130,7 @@ export default async function ProgramResults({
             {notes.map((note) => (
               <li
                 key={note.id}
-                className="rounded-xl border-s-2 border-chart bg-background px-4 py-3"
+                className="rounded-2xl border-s-4 border-chart bg-white/55 px-4 py-3"
               >
                 <p className="leading-relaxed whitespace-pre-wrap">
                   {note.recommendations}
@@ -152,7 +154,7 @@ export default async function ProgramResults({
         {/* Six columns: let the table scroll instead of the page. */}
         <div className="overflow-x-auto">
           <table className="w-full min-w-[50rem] text-start">
-            <thead className="border-y border-line bg-background text-xs text-muted">
+            <thead className="border-y border-line bg-white/40 text-xs font-semibold text-muted">
               <tr>
                 <th className="px-5 py-3 font-medium sm:px-6">
                   {t.results.colTrainee}

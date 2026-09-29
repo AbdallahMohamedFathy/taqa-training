@@ -13,7 +13,7 @@ const SCALE = Array.from(
 );
 
 const headerInputClass =
-  "mt-2 w-full rounded-xl border border-line bg-background px-4 py-2.5 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20";
+  "field mt-2";
 
 /** Saves one evaluation. Swappable so a demo can run without Supabase. */
 export type SubmitHandler = (payload: {
@@ -113,10 +113,12 @@ export default function EvaluationForm({
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
       <header ref={headerRef} className="scroll-mt-4 card overflow-hidden">
-        <div className="bg-brand px-6 py-6 text-white sm:px-8 sm:py-7">
-          <h1 className="text-2xl font-bold sm:text-3xl">{t.form.title}</h1>
+        <div className="bg-gradient-to-br from-brand-vivid to-chart px-6 py-7 text-white sm:px-8 sm:py-8">
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
+            {t.form.title}
+          </h1>
           {/* The paper original is bilingual, so the other language stays on show. */}
-          <p className="mt-1 text-sm text-white/80">{t.form.subtitle}</p>
+          <p className="mt-1 text-sm text-white/85">{t.form.subtitle}</p>
         </div>
 
         <div className="p-6 sm:p-8">
@@ -205,11 +207,11 @@ export default function EvaluationForm({
             key={section.key}
             className="overflow-hidden card"
           >
-            <h2 className="border-b border-line bg-brand-soft px-5 py-3 text-brand-deep sm:px-6">
+            <h2 className="flex flex-wrap items-baseline gap-x-2 border-b border-line bg-brand-soft px-5 py-3.5 text-brand-deep sm:px-6">
               <span className="text-base font-bold">
                 {ar ? section.ar : section.en}
               </span>
-              <bdi className="ms-2 text-sm font-medium text-muted">
+              <bdi className="text-sm font-medium text-muted">
                 {ar ? section.en : section.ar}
               </bdi>
             </h2>
@@ -270,7 +272,7 @@ export default function EvaluationForm({
               type="text"
               value={traineeName}
               onChange={(e) => setTraineeName(e.target.value)}
-              className="mt-2 w-full rounded-xl border border-line bg-background px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
+              className="field mt-2"
             />
           </label>
         </section>
@@ -291,7 +293,7 @@ export default function EvaluationForm({
           <button
             type="submit"
             disabled={submitting}
-            className="rounded-xl bg-brand px-8 py-3.5 font-semibold text-white transition-colors hover:bg-brand-hover disabled:opacity-60"
+            className="btn-primary px-8 py-3.5"
           >
             {submitting ? t.form.submitting : t.form.submit}
           </button>
@@ -322,10 +324,10 @@ function RatingScale({
           return (
             <label
               key={score}
-              className={`ltr-nums flex h-11 cursor-pointer items-center justify-center rounded-lg border text-sm font-semibold transition-colors ${
+              className={`ltr-nums flex h-11 cursor-pointer items-center justify-center rounded-xl border text-sm font-semibold transition-all ${
                 selected
-                  ? "border-brand bg-brand text-white"
-                  : "border-line bg-background hover:border-brand hover:bg-brand-soft"
+                  ? "border-transparent bg-gradient-to-br from-brand-vivid to-chart text-white shadow-md shadow-brand-vivid/35"
+                  : "border-line bg-white/55 hover:border-brand-vivid hover:bg-white/90"
               }`}
             >
               <input

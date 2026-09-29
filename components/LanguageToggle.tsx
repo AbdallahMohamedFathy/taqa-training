@@ -27,11 +27,7 @@ export default function LanguageToggle({
     <button
       type="button"
       onClick={toggle}
-      className={`no-print rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors ${
-        onBrand
-          ? "border-white/30 text-white hover:bg-white/15"
-          : "border-line bg-surface hover:border-brand hover:bg-brand-soft"
-      }`}
+      className="btn-ghost no-print px-3 py-1.5 text-sm"
     >
       {t.langLabel}
     </button>
