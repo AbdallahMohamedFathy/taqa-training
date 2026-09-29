@@ -1,4 +1,5 @@
 import DeleteSubmissionButton from "@/components/DeleteSubmissionButton";
+import ScoreMeter from "@/components/ScoreMeter";
 import ExportExcelButton from "@/components/ExportExcelButton";
 import ScoreRow from "@/components/ScoreRow";
 import { SECTIONS } from "@/lib/form-schema";
@@ -47,13 +48,13 @@ export default async function ProgramResults({
       </div>
 
       {spellings.size > 1 && (
-        <p className="mt-4 rounded-xl bg-accent-soft px-4 py-3 text-sm leading-relaxed">
+        <p className="mt-4 rounded-xl bg-brand-soft px-4 py-3 text-sm leading-relaxed">
           {t.results.spellingNotice(spellings.size)}
         </p>
       )}
 
       <section className="mt-6 grid gap-4 sm:grid-cols-2">
-        <div className="rounded-2xl border border-line bg-surface p-6">
+        <div className="card p-6">
           <p className="text-sm text-muted">{t.results.overallAverage}</p>
           {/* bdi keeps "7.4 / 10" reading left-to-right without un-aligning it. */}
           <p className="mt-1 text-5xl font-bold">
@@ -62,8 +63,9 @@ export default async function ProgramResults({
               <span className="text-xl font-medium text-muted"> / 10</span>
             </bdi>
           </p>
+          {overall !== null && <ScoreMeter value={overall} className="mt-4" />}
         </div>
-        <div className="rounded-2xl border border-line bg-surface p-6">
+        <div className="card p-6">
           <p className="text-sm text-muted">{t.results.responseCount}</p>
           <p className="mt-1 text-5xl font-bold">
             <bdi>{submissions.length}</bdi>
@@ -71,7 +73,7 @@ export default async function ProgramResults({
         </div>
       </section>
 
-      <section className="mt-6 rounded-2xl border border-line bg-surface p-5 sm:p-6">
+      <section className="mt-6 card p-5 sm:p-6">
         <h2 className="text-lg font-bold">{t.results.sectionAverages}</h2>
         <p className="mt-1 text-sm text-muted">
           {t.results.sectionAveragesHint}
@@ -94,9 +96,9 @@ export default async function ProgramResults({
         {SECTIONS.map((section) => (
           <div
             key={section.key}
-            className="overflow-hidden rounded-2xl border border-line bg-surface"
+            className="overflow-hidden card"
           >
-            <h3 className="border-b border-line bg-accent-soft/60 px-5 py-3 font-bold sm:px-6">
+            <h3 className="border-b border-line bg-brand-soft px-5 py-3 font-bold text-brand-deep sm:px-6">
               {ar ? section.ar : section.en}
             </h3>
             <div className="divide-y divide-line px-5 sm:px-6">
@@ -115,7 +117,7 @@ export default async function ProgramResults({
       </section>
 
       {notes.length > 0 && (
-        <section className="mt-6 rounded-2xl border border-line bg-surface p-5 sm:p-6">
+        <section className="mt-6 card p-5 sm:p-6">
           <h2 className="text-lg font-bold">
             {t.results.recommendations}
             <bdi className="ltr-nums ms-2 text-sm font-medium text-muted">
@@ -140,7 +142,7 @@ export default async function ProgramResults({
         </section>
       )}
 
-      <section className="mt-6 overflow-hidden rounded-2xl border border-line bg-surface">
+      <section className="mt-6 overflow-hidden card">
         <h2 className="border-b border-line px-5 py-4 text-lg font-bold sm:px-6">
           {t.results.individualResponses}
         </h2>

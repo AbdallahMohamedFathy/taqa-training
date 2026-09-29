@@ -13,7 +13,7 @@ const SCALE = Array.from(
 );
 
 const headerInputClass =
-  "mt-2 w-full rounded-xl border border-line bg-background px-4 py-2.5 outline-none focus:border-accent focus:ring-2 focus:ring-accent/20";
+  "mt-2 w-full rounded-xl border border-line bg-background px-4 py-2.5 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20";
 
 /** Saves one evaluation. Swappable so a demo can run without Supabase. */
 export type SubmitHandler = (payload: {
@@ -112,16 +112,16 @@ export default function EvaluationForm({
 
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
-      <header
-        ref={headerRef}
-        className="scroll-mt-4 rounded-2xl border border-line bg-surface p-6 sm:p-8"
-      >
-        <h1 className="text-2xl font-bold sm:text-3xl">{t.form.title}</h1>
-        {/* The paper original is bilingual, so the other language stays on show. */}
-        <p className="mt-1 text-sm text-muted">{t.form.subtitle}</p>
+      <header ref={headerRef} className="scroll-mt-4 card overflow-hidden">
+        <div className="bg-brand px-6 py-6 text-white sm:px-8 sm:py-7">
+          <h1 className="text-2xl font-bold sm:text-3xl">{t.form.title}</h1>
+          {/* The paper original is bilingual, so the other language stays on show. */}
+          <p className="mt-1 text-sm text-white/80">{t.form.subtitle}</p>
+        </div>
 
+        <div className="p-6 sm:p-8">
         {/* The trainee fills the program header themselves, as on the paper form. */}
-        <div className="mt-6 grid gap-4 border-t border-line pt-5 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2">
           <label className="block">
             <span className="text-sm font-medium">{t.form.programName}</span>
             <select
@@ -193,8 +193,9 @@ export default function EvaluationForm({
           </div>
         </fieldset>
 
-        <div className="mt-6 rounded-xl bg-accent-soft px-4 py-3 text-sm leading-relaxed">
+        <div className="mt-6 rounded-xl bg-brand-soft px-4 py-3 text-sm leading-relaxed">
           {t.form.instructions}
+        </div>
         </div>
       </header>
 
@@ -202,15 +203,15 @@ export default function EvaluationForm({
         {SECTIONS.map((section) => (
           <section
             key={section.key}
-            className="overflow-hidden rounded-2xl border border-line bg-surface"
+            className="overflow-hidden card"
           >
-            <h2 className="border-b border-line bg-accent-soft/60 px-5 py-3 sm:px-6">
+            <h2 className="border-b border-line bg-brand-soft px-5 py-3 text-brand-deep sm:px-6">
               <span className="text-base font-bold">
                 {ar ? section.ar : section.en}
               </span>
-              <span className="ms-2 text-sm font-medium text-muted">
+              <bdi className="ms-2 text-sm font-medium text-muted">
                 {ar ? section.en : section.ar}
-              </span>
+              </bdi>
             </h2>
 
             <div className="divide-y divide-line">
@@ -221,14 +222,14 @@ export default function EvaluationForm({
                     itemRefs.current[item.key] = el;
                   }}
                   className={`px-5 py-5 sm:px-6 ${
-                    missing.has(item.key) ? "bg-red-50" : ""
+                    missing.has(item.key) ? "bg-danger-soft" : ""
                   }`}
                 >
                   <p className="font-medium leading-relaxed">
-                    {ar ? item.ar : item.en}
+                    <bdi>{ar ? item.ar : item.en}</bdi>
                   </p>
                   <p className="mt-1 text-sm leading-relaxed text-muted">
-                    {ar ? item.en : item.ar}
+                    <bdi>{ar ? item.en : item.ar}</bdi>
                   </p>
 
                   <RatingScale
@@ -250,14 +251,14 @@ export default function EvaluationForm({
           </section>
         ))}
 
-        <section className="rounded-2xl border border-line bg-surface p-5 sm:p-6">
+        <section className="card p-5 sm:p-6">
           <h2 className="text-base font-bold">{t.form.recommendations}</h2>
           <textarea
             value={recommendations}
             onChange={(e) => setRecommendations(e.target.value)}
             rows={5}
             placeholder={t.form.recommendationsPlaceholder}
-            className="mt-4 w-full rounded-xl border border-line bg-background px-4 py-3 leading-relaxed outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+            className="mt-4 w-full rounded-xl border border-line bg-background px-4 py-3 leading-relaxed outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
           />
 
           <label className="mt-5 block">
@@ -269,7 +270,7 @@ export default function EvaluationForm({
               type="text"
               value={traineeName}
               onChange={(e) => setTraineeName(e.target.value)}
-              className="mt-2 w-full rounded-xl border border-line bg-background px-4 py-3 outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+              className="mt-2 w-full rounded-xl border border-line bg-background px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
             />
           </label>
         </section>
@@ -277,7 +278,7 @@ export default function EvaluationForm({
         {error && (
           <p
             role="alert"
-            className="rounded-xl border border-danger/30 bg-red-50 px-4 py-3 text-sm font-medium text-danger"
+            className="rounded-xl border border-danger/30 bg-danger-soft px-4 py-3 text-sm font-medium text-danger"
           >
             {error}
           </p>
@@ -290,7 +291,7 @@ export default function EvaluationForm({
           <button
             type="submit"
             disabled={submitting}
-            className="rounded-xl bg-accent px-8 py-3.5 font-semibold text-white transition-colors hover:bg-accent-hover disabled:opacity-60"
+            className="rounded-xl bg-brand px-8 py-3.5 font-semibold text-white transition-colors hover:bg-brand-hover disabled:opacity-60"
           >
             {submitting ? t.form.submitting : t.form.submit}
           </button>
@@ -323,8 +324,8 @@ function RatingScale({
               key={score}
               className={`ltr-nums flex h-11 cursor-pointer items-center justify-center rounded-lg border text-sm font-semibold transition-colors ${
                 selected
-                  ? "border-accent bg-accent text-white"
-                  : "border-line bg-background hover:border-accent hover:bg-accent-soft"
+                  ? "border-brand bg-brand text-white"
+                  : "border-line bg-background hover:border-brand hover:bg-brand-soft"
               }`}
             >
               <input

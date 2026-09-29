@@ -33,7 +33,7 @@ export default function DeleteSubmissionButton({ id }: { id: string }) {
       type="button"
       onClick={remove}
       disabled={busy}
-      className="no-print rounded-lg px-2 py-1 text-xs font-medium text-muted transition-colors hover:bg-red-50 hover:text-danger disabled:opacity-50"
+      className="no-print rounded-lg px-2 py-1 text-xs font-medium text-muted transition-colors hover:bg-danger-soft hover:text-danger disabled:opacity-50"
     >
       {t.results.deleteRow}
     </button>

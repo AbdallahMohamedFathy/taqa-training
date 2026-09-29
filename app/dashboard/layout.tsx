@@ -19,22 +19,26 @@ export default async function DashboardLayout({
 
   return (
     <>
-      <header className="no-print border-b border-line bg-surface">
-        <div className="mx-auto flex w-full max-w-5xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
-          <Link href="/dashboard" className="font-bold">
-            {t.appName}
+      <header className="no-print bg-brand text-white">
+        <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
+          <Link href="/dashboard" className="flex items-center gap-2.5">
+            <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/15 text-base">
+              📋
+            </span>
+            <span className="font-bold">{t.appName}</span>
           </Link>
-          <div className="flex items-center gap-3 sm:gap-4">
+
+          <div className="flex items-center gap-2 sm:gap-3">
             <Link
               href="/dashboard/settings"
-              className="text-sm font-medium text-accent hover:underline"
+              className="rounded-lg px-3 py-1.5 text-sm font-medium text-white/90 transition-colors hover:bg-white/15 hover:text-white"
             >
               {t.settings}
             </Link>
-            <span className="hidden text-sm text-muted sm:inline" dir="ltr">
+            <span className="hidden text-sm text-white/70 md:inline" dir="ltr">
               {user?.email}
             </span>
-            <LanguageToggle />
+            <LanguageToggle onBrand />
             <SignOutButton />
           </div>
         </div>

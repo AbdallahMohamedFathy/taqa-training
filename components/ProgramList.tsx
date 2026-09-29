@@ -32,7 +32,7 @@ export default async function ProgramList({
           <p className="mt-1 text-sm text-muted">{t.list.emptyHint}</p>
         </div>
       ) : (
-        <div className="mt-6 overflow-hidden rounded-2xl border border-line bg-surface">
+        <div className="mt-6 overflow-hidden card">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[40rem] text-start">
               <thead className="border-b border-line bg-background text-xs text-muted">
@@ -55,7 +55,7 @@ export default async function ProgramList({
                       <td className="px-5 py-4 sm:px-6">
                         <Link
                           href={`/dashboard/programs/${encodeURIComponent(group.key)}`}
-                          className="font-medium text-accent hover:underline"
+                          className="font-medium text-brand hover:underline"
                         >
                           {group.name}
                         </Link>

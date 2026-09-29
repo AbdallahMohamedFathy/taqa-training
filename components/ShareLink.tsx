@@ -20,7 +20,7 @@ export default function ShareLink() {
   }
 
   return (
-    <div className="no-print mt-6 rounded-2xl border border-line bg-accent-soft p-5">
+    <div className="no-print mt-6 rounded-2xl border border-line bg-brand-soft p-5">
       <p className="text-sm font-medium">{t.share.title}</p>
       <p className="mt-1 text-sm text-muted">{t.share.hint}</p>
       <div className="mt-3 flex flex-col gap-2 sm:flex-row">
@@ -34,7 +34,7 @@ export default function ShareLink() {
         <button
           type="button"
           onClick={copy}
-          className="shrink-0 rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-accent-hover"
+          className="shrink-0 rounded-xl bg-brand px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-brand-hover"
         >
           {copied ? t.share.copied : t.share.copy}
         </button>

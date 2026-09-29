@@ -8,7 +8,12 @@ import { LANG_COOKIE } from "@/lib/i18n";
  * Stores the choice in a cookie rather than state, so the server renders the
  * right `lang`/`dir` on the very first paint instead of flipping after hydration.
  */
-export default function LanguageToggle() {
+export default function LanguageToggle({
+  onBrand = false,
+}: {
+  /** True when it sits on the blue header bar rather than a white page. */
+  onBrand?: boolean;
+}) {
   const router = useRouter();
   const { lang, t } = useLang();
 
@@ -22,7 +27,11 @@ export default function LanguageToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="no-print rounded-lg border border-line px-3 py-1.5 text-sm font-medium transition-colors hover:bg-background"
+      className={`no-print rounded-lg border px-3 py-1.5 text-sm font-medium transition-colors ${
+        onBrand
+          ? "border-white/30 text-white hover:bg-white/15"
+          : "border-line bg-surface hover:border-brand hover:bg-brand-soft"
+      }`}
     >
       {t.langLabel}
     </button>

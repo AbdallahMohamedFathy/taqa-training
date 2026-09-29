@@ -80,12 +80,12 @@ export default function ProgramCatalog({
             setError(null);
           }}
           placeholder={t.catalog.addPlaceholder}
-          className="min-w-0 flex-1 rounded-xl border border-line bg-surface px-4 py-3 outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+          className="min-w-0 flex-1 rounded-xl border border-line bg-surface px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
         />
         <button
           type="submit"
           disabled={busy || !name.trim()}
-          className="shrink-0 rounded-xl bg-accent px-6 py-3 font-semibold text-white transition-colors hover:bg-accent-hover disabled:opacity-50"
+          className="shrink-0 rounded-xl bg-brand px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-hover disabled:opacity-50"
         >
           {busy ? t.catalog.adding : t.catalog.add}
         </button>
@@ -102,7 +102,7 @@ export default function ProgramCatalog({
           {t.catalog.empty}
         </div>
       ) : (
-        <ul className="mt-6 divide-y divide-line overflow-hidden rounded-2xl border border-line bg-surface">
+        <ul className="mt-6 divide-y divide-line overflow-hidden card">
           {programs.map((program) => {
             const used = counts[programKey(program.name)] ?? 0;
             return (
@@ -121,7 +121,7 @@ export default function ProgramCatalog({
                 <button
                   type="button"
                   onClick={() => remove(program)}
-                  className="shrink-0 rounded-lg border border-line px-3 py-1.5 text-sm font-medium text-danger transition-colors hover:bg-red-50"
+                  className="shrink-0 rounded-lg border border-line px-3 py-1.5 text-sm font-medium text-danger transition-colors hover:bg-danger-soft"
                 >
                   {t.catalog.remove}
                 </button>

@@ -37,7 +37,7 @@ export default function LoginForm({ redirectTo }: { redirectTo: string }) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="mt-6 space-y-4 rounded-2xl border border-line bg-surface p-6"
+      className="mt-6 space-y-4 card p-6"
     >
       <label className="block">
         <span className="text-sm font-medium">{t.login.email}</span>
@@ -47,7 +47,7 @@ export default function LoginForm({ redirectTo }: { redirectTo: string }) {
           dir="ltr"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="mt-2 w-full rounded-xl border border-line bg-background px-4 py-3 outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+          className="mt-2 w-full rounded-xl border border-line bg-background px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
         />
       </label>
 
@@ -59,7 +59,7 @@ export default function LoginForm({ redirectTo }: { redirectTo: string }) {
           dir="ltr"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="mt-2 w-full rounded-xl border border-line bg-background px-4 py-3 outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+          className="mt-2 w-full rounded-xl border border-line bg-background px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/20"
         />
       </label>
 
@@ -72,7 +72,7 @@ export default function LoginForm({ redirectTo }: { redirectTo: string }) {
       <button
         type="submit"
         disabled={submitting}
-        className="w-full rounded-xl bg-accent px-6 py-3 font-semibold text-white transition-colors hover:bg-accent-hover disabled:opacity-60"
+        className="w-full rounded-xl bg-brand px-6 py-3 font-semibold text-white transition-colors hover:bg-brand-hover disabled:opacity-60"
       >
         {submitting ? t.login.submitting : t.login.submit}
       </button>
