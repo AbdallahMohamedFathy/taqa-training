@@ -1,0 +1,350 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useRef, useState } from "react";
+import { useLang } from "@/components/LangProvider";
+import { RATING_MAX, RATING_MIN, SECTIONS, ALL_ITEMS } from "@/lib/form-schema";
+import { createClient } from "@/lib/supabase/client";
+import type { Program, Ratings } from "@/lib/types";
+
+const SCALE = Array.from(
+  { length: RATING_MAX - RATING_MIN + 1 },
+  (_, i) => RATING_MIN + i,
+);
+
+const headerInputClass =
+  "mt-2 w-full rounded-xl border border-line bg-background px-4 py-2.5 outline-none focus:border-accent focus:ring-2 focus:ring-accent/20";
+
+/** Saves one evaluation. Swappable so a demo can run without Supabase. */
+export type SubmitHandler = (payload: {
+  program_name: string;
+  program_date: string;
+  instructors: string[];
+  trainee_name: string | null;
+  ratings: Ratings;
+  recommendations: string | null;
+}) => Promise<{ error: unknown }>;
+
+const saveToSupabase: SubmitHandler = async (payload) => {
+  const { error } = await createClient().from("submissions").insert(payload);
+  return { error };
+};
+
+/** Sentinel for the escape hatch when HR has not listed the trainee's course. */
+const OTHER = "__other__";
+
+export default function EvaluationForm({
+  programs,
+  onSubmit = saveToSupabase,
+}: {
+  programs: Program[];
+  onSubmit?: SubmitHandler;
+}) {
+  const router = useRouter();
+  const { lang, t } = useLang();
+  const ar = lang === "ar";
+
+  const [picked, setPicked] = useState(programs.length ? "" : OTHER);
+  const [otherName, setOtherName] = useState("");
+  const programName = picked === OTHER ? otherName : picked;
+  const [programDate, setProgramDate] = useState("");
+  const [instructors, setInstructors] = useState(["", "", ""]);
+  const [ratings, setRatings] = useState<Ratings>({});
+  const [traineeName, setTraineeName] = useState("");
+  const [recommendations, setRecommendations] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [missing, setMissing] = useState<Set<string>>(new Set());
+  const itemRefs = useRef<Record<string, HTMLDivElement | null>>({});
+  const headerRef = useRef<HTMLElement | null>(null);
+
+  const answered = ALL_ITEMS.filter((i) => ratings[i.key] !== undefined).length;
+
+  function setRating(key: string, value: number) {
+    setRatings((prev) => ({ ...prev, [key]: value }));
+    setMissing((prev) => {
+      if (!prev.has(key)) return prev;
+      const next = new Set(prev);
+      next.delete(key);
+      return next;
+    });
+  }
+
+  async function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    setError(null);
+
+    if (!programName.trim() || !programDate) {
+      setError(t.form.errHeader);
+      headerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+
+    const unanswered = ALL_ITEMS.filter((i) => ratings[i.key] === undefined);
+    if (unanswered.length > 0) {
+      setMissing(new Set(unanswered.map((i) => i.key)));
+      setError(t.form.errItems(unanswered.length));
+      itemRefs.current[unanswered[0].key]?.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+      return;
+    }
+
+    setSubmitting(true);
+    const { error: insertError } = await onSubmit({
+      program_name: programName.trim(),
+      program_date: programDate,
+      instructors: instructors.map((i) => i.trim()).filter(Boolean),
+      trainee_name: traineeName.trim() || null,
+      ratings,
+      recommendations: recommendations.trim() || null,
+    });
+
+    if (insertError) {
+      setSubmitting(false);
+      setError(t.form.errSubmit);
+      return;
+    }
+
+    router.push("/evaluate/thank-you");
+  }
+
+  return (
+    <main className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
+      <header
+        ref={headerRef}
+        className="scroll-mt-4 rounded-2xl border border-line bg-surface p-6 sm:p-8"
+      >
+        <h1 className="text-2xl font-bold sm:text-3xl">{t.form.title}</h1>
+        {/* The paper original is bilingual, so the other language stays on show. */}
+        <p className="mt-1 text-sm text-muted">{t.form.subtitle}</p>
+
+        {/* The trainee fills the program header themselves, as on the paper form. */}
+        <div className="mt-6 grid gap-4 border-t border-line pt-5 sm:grid-cols-2">
+          <label className="block">
+            <span className="text-sm font-medium">{t.form.programName}</span>
+            <select
+              value={picked}
+              onChange={(e) => setPicked(e.target.value)}
+              className={headerInputClass}
+            >
+              {programs.length > 0 && (
+                <option value="">{t.form.choosePlaceholder}</option>
+              )}
+              {programs.map((program) => (
+                <option key={program.id} value={program.name}>
+                  {program.name}
+                </option>
+              ))}
+              <option value={OTHER}>{t.form.otherOption}</option>
+            </select>
+            {picked === OTHER && (
+              <input
+                type="text"
+                value={otherName}
+                onChange={(e) => setOtherName(e.target.value)}
+                placeholder={t.form.otherPlaceholder}
+                className={headerInputClass}
+              />
+            )}
+            {programs.length === 0 && (
+              <p className="mt-2 text-xs leading-relaxed text-muted">
+                {t.form.noProgramsYet}
+              </p>
+            )}
+          </label>
+
+          <label className="block">
+            <span className="text-sm font-medium">{t.form.programDate}</span>
+            <input
+              type="date"
+              dir="ltr"
+              value={programDate}
+              onChange={(e) => setProgramDate(e.target.value)}
+              className={headerInputClass}
+            />
+          </label>
+        </div>
+
+        <fieldset className="mt-4">
+          <legend className="text-sm font-medium">
+            {t.form.instructorName}{" "}
+            <span className="font-normal text-muted">{t.form.optional}</span>
+          </legend>
+          <div className="grid gap-2 sm:grid-cols-3">
+            {instructors.map((value, index) => (
+              <div key={index} className="relative">
+                <span className="ltr-nums absolute top-1/2 start-3 -translate-y-1/2 text-sm text-muted">
+                  {index + 1}.
+                </span>
+                <input
+                  type="text"
+                  value={value}
+                  onChange={(e) =>
+                    setInstructors((prev) =>
+                      prev.map((v, i) => (i === index ? e.target.value : v)),
+                    )
+                  }
+                  className={`${headerInputClass} mt-2 ps-8`}
+                />
+              </div>
+            ))}
+          </div>
+        </fieldset>
+
+        <div className="mt-6 rounded-xl bg-accent-soft px-4 py-3 text-sm leading-relaxed">
+          {t.form.instructions}
+        </div>
+      </header>
+
+      <form onSubmit={handleSubmit} className="mt-6 space-y-6">
+        {SECTIONS.map((section) => (
+          <section
+            key={section.key}
+            className="overflow-hidden rounded-2xl border border-line bg-surface"
+          >
+            <h2 className="border-b border-line bg-accent-soft/60 px-5 py-3 sm:px-6">
+              <span className="text-base font-bold">
+                {ar ? section.ar : section.en}
+              </span>
+              <span className="ms-2 text-sm font-medium text-muted">
+                {ar ? section.en : section.ar}
+              </span>
+            </h2>
+
+            <div className="divide-y divide-line">
+              {section.items.map((item) => (
+                <div
+                  key={item.key}
+                  ref={(el) => {
+                    itemRefs.current[item.key] = el;
+                  }}
+                  className={`px-5 py-5 sm:px-6 ${
+                    missing.has(item.key) ? "bg-red-50" : ""
+                  }`}
+                >
+                  <p className="font-medium leading-relaxed">
+                    {ar ? item.ar : item.en}
+                  </p>
+                  <p className="mt-1 text-sm leading-relaxed text-muted">
+                    {ar ? item.en : item.ar}
+                  </p>
+
+                  <RatingScale
+                    name={item.key}
+                    value={ratings[item.key]}
+                    onChange={(v) => setRating(item.key, v)}
+                    lowLabel={t.form.scaleLow}
+                    highLabel={t.form.scaleHigh}
+                  />
+
+                  {missing.has(item.key) && (
+                    <p className="mt-2 text-sm font-medium text-danger">
+                      {t.form.errItemRequired}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        ))}
+
+        <section className="rounded-2xl border border-line bg-surface p-5 sm:p-6">
+          <h2 className="text-base font-bold">{t.form.recommendations}</h2>
+          <textarea
+            value={recommendations}
+            onChange={(e) => setRecommendations(e.target.value)}
+            rows={5}
+            placeholder={t.form.recommendationsPlaceholder}
+            className="mt-4 w-full rounded-xl border border-line bg-background px-4 py-3 leading-relaxed outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+          />
+
+          <label className="mt-5 block">
+            <span className="text-sm font-medium">
+              {t.form.traineeName}{" "}
+              <span className="font-normal text-muted">{t.form.optional}</span>
+            </span>
+            <input
+              type="text"
+              value={traineeName}
+              onChange={(e) => setTraineeName(e.target.value)}
+              className="mt-2 w-full rounded-xl border border-line bg-background px-4 py-3 outline-none focus:border-accent focus:ring-2 focus:ring-accent/20"
+            />
+          </label>
+        </section>
+
+        {error && (
+          <p
+            role="alert"
+            className="rounded-xl border border-danger/30 bg-red-50 px-4 py-3 text-sm font-medium text-danger"
+          >
+            {error}
+          </p>
+        )}
+
+        <div className="flex flex-col gap-3 pb-8 sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-sm text-muted">
+            {t.form.answered(answered, ALL_ITEMS.length)}
+          </p>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="rounded-xl bg-accent px-8 py-3.5 font-semibold text-white transition-colors hover:bg-accent-hover disabled:opacity-60"
+          >
+            {submitting ? t.form.submitting : t.form.submit}
+          </button>
+        </div>
+      </form>
+    </main>
+  );
+}
+
+function RatingScale({
+  name,
+  value,
+  onChange,
+  lowLabel,
+  highLabel,
+}: {
+  name: string;
+  value: number | undefined;
+  onChange: (value: number) => void;
+  lowLabel: string;
+  highLabel: string;
+}) {
+  return (
+    <fieldset className="mt-4">
+      <div className="grid grid-cols-5 gap-1.5 sm:grid-cols-10" dir="ltr">
+        {SCALE.map((score) => {
+          const selected = value === score;
+          return (
+            <label
+              key={score}
+              className={`ltr-nums flex h-11 cursor-pointer items-center justify-center rounded-lg border text-sm font-semibold transition-colors ${
+                selected
+                  ? "border-accent bg-accent text-white"
+                  : "border-line bg-background hover:border-accent hover:bg-accent-soft"
+              }`}
+            >
+              <input
+                type="radio"
+                name={name}
+                value={score}
+                checked={selected}
+                onChange={() => onChange(score)}
+                className="sr-only"
+              />
+              {score}
+            </label>
+          );
+        })}
+      </div>
+      {/* LTR so each caption sits under the end of the scale it describes. */}
+      <div dir="ltr" className="mt-1.5 flex justify-between text-xs text-muted">
+        <span>{lowLabel}</span>
+        <span>{highLabel}</span>
+      </div>
+    </fieldset>
+  );
+}

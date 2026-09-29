@@ -1,0 +1,58 @@
+@import "tailwindcss";
+
+/* Light-only, on purpose: this is an internal HR tool that also gets printed
+   and screenshotted, so a single predictable look beats a theme switch. */
+:root {
+  --background: #f5f7f8;
+  --surface: #ffffff;
+  --foreground: #16191d;
+  --muted: #5b6672;
+  --border: #e2e6ea;
+  --accent: #0f766e;
+  --accent-hover: #115e56;
+  --accent-soft: #e6f2f0;
+  --danger: #b42318;
+  /* Data marks get their own, more chromatic step of the same ramp: the UI
+     accent is dark enough for AA text but reads gray as a bar fill. */
+  --chart: #0d9488;
+  --chart-track: #ccfbf1;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-line: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-chart: var(--chart);
+  --color-chart-track: var(--chart-track);
+  /* System stack, no webfont fetch: every target platform ships a good Arabic
+     face, and the build stays offline-safe. */
+  --font-sans: "Segoe UI", "Noto Sans Arabic", "Dubai", "Geeza Pro", system-ui,
+    -apple-system, "Helvetica Neue", Arial, sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Numbers stay left-to-right and unshaped inside the RTL layout. */
+.ltr-nums {
+  direction: ltr;
+  unicode-bidi: isolate;
+  font-variant-numeric: tabular-nums;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+}
