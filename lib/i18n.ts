@@ -13,6 +13,7 @@ export function dirOf(lang: Lang): "rtl" | "ltr" {
 
 const ar = {
   appName: "لوحة تحكم التدريب",
+  nav: { evaluations: "التقييمات", attendance: "الحضور" },
   signOut: "خروج",
   backToPrograms: "رجوع للبرامج",
   langLabel: "English",
@@ -155,6 +156,7 @@ const ar = {
 
 const en: typeof ar = {
   appName: "Training Dashboard",
+  nav: { evaluations: "Evaluations", attendance: "Attendance" },
   signOut: "Sign out",
   backToPrograms: "Back to programs",
   langLabel: "العربية",

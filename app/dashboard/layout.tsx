@@ -1,4 +1,5 @@
 import Link from "next/link";
+import DashboardNav from "@/components/DashboardNav";
 import LanguageToggle from "@/components/LanguageToggle";
 import { getT } from "@/lib/i18n-server";
 import { createClient } from "@/lib/supabase/server";
@@ -30,13 +31,11 @@ export default async function DashboardLayout({
             </span>
           </Link>
 
+          <div className="order-3 w-full sm:order-none sm:w-auto">
+            <DashboardNav />
+          </div>
+
           <div className="flex items-center gap-2 sm:gap-3">
-            <Link
-              href="/dashboard/attendance"
-              className="rounded-xl px-3 py-1.5 text-sm font-semibold text-brand transition-colors hover:bg-brand-soft"
-            >
-              {t.attendance.nav}
-            </Link>
             <span className="hidden text-sm text-muted md:inline" dir="ltr">
               {user?.email}
             </span>
