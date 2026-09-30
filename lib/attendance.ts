@@ -1,40 +1,41 @@
-import { programKey } from "./program-key";
 import type { Attendance } from "./types";
 
-/** One course on one day — the unit an attendance sheet is printed for. */
+/** One day's register — the unit an attendance sheet is printed for. */
 export type Session = {
   key: string;
-  programName: string;
   date: string;
+  /** Every distinct program the day's attendees named — shown, never grouped on. */
+  programs: string[];
   attendees: Attendance[];
 };
 
 /**
- * Groups sign-ins into sessions. Names come from HR's dropdown so they already
- * match exactly, but `programKey` also folds any older free-typed spellings.
+ * Groups sign-ins by day, and only by day.
+ *
+ * Attendees do type a program name, but it is deliberately not part of the
+ * key: two people writing "AD" and "AR" for the same session used to produce
+ * two half-empty sheets. The typed names ride along on `programs` for the
+ * header, where being approximate costs nothing.
  */
 export function groupSessions(rows: Attendance[]): Session[] {
-  const sessions = new Map<string, Attendance[]>();
+  const days = new Map<string, Attendance[]>();
   for (const row of rows) {
-    const key = `${programKey(row.program_name)}|${row.attended_on}`;
-    const list = sessions.get(key) ?? [];
+    const list = days.get(row.attended_on) ?? [];
     list.push(row);
-    sessions.set(key, list);
+    days.set(row.attended_on, list);
   }
 
-  return [...sessions.entries()]
-    .map(([key, list]) => ({
-      key,
-      programName: list[0].program_name,
-      date: list[0].attended_on,
+  return [...days.entries()]
+    .map(([date, list]) => ({
+      key: date,
+      date,
+      programs: [
+        ...new Set(list.map((r) => r.program_name?.trim()).filter(Boolean)),
+      ].sort() as string[],
       // Sheet order is arrival order, which is what a paper register shows.
       attendees: [...list].sort((a, b) =>
         a.created_at.localeCompare(b.created_at),
       ),
     }))
-    .sort(
-      (a, b) =>
-        b.date.localeCompare(a.date) ||
-        a.programName.localeCompare(b.programName),
-    );
+    .sort((a, b) => b.date.localeCompare(a.date));
 }

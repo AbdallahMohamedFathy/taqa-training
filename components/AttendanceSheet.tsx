@@ -41,7 +41,11 @@ export default function AttendanceSheet({
             <div className="sheet-field">
               <span className="sheet-field-label">Program Name</span>
               <span className="sheet-colon">:</span>
-              <span className="sheet-field-value">{session.programName}</span>
+              {/* Whatever attendees typed, for reference. Blank stays blank so
+                  it can be written in by hand, as on the paper original. */}
+              <span className="sheet-field-value">
+                {session.programs.join(" / ")}
+              </span>
             </div>
             <div className="sheet-field">
               <span className="sheet-field-label">Date</span>

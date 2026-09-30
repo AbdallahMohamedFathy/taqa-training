@@ -23,9 +23,7 @@ export default function AttendanceForm() {
     const cleanName = cleanText(name);
     const cleanDepartment = cleanText(department);
 
-    const cleanProgram = cleanText(programName);
-
-    if (!cleanProgram || !cleanName || !cleanDepartment) {
+    if (!cleanName || !cleanDepartment) {
       setError(t.attendance.errFields);
       return;
     }
@@ -34,7 +32,9 @@ export default function AttendanceForm() {
     const { error: insertError } = await createClient()
       .from("attendance")
       .insert({
-        program_name: cleanProgram,
+        // Recorded and printed, but never used to split the register —
+        // whoever runs the day decides what the session is called.
+        program_name: cleanText(programName),
         name: cleanName,
         department: cleanDepartment,
       });
@@ -62,7 +62,10 @@ export default function AttendanceForm() {
 
         <form onSubmit={handleSubmit} className="space-y-5 p-6 sm:p-8">
           <label className="block">
-            <span className="text-sm font-medium">{t.form.programName}</span>
+            <span className="text-sm font-medium">
+              {t.form.programName}{" "}
+              <span className="font-normal text-muted">{t.form.optional}</span>
+            </span>
             <input
               type="text"
               value={programName}

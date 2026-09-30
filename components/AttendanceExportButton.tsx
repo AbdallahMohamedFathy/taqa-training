@@ -20,7 +20,7 @@ export default function AttendanceExportButton({
       await downloadWorkbook(
         t.attendance.sheetTitle,
         sessions.map((session) => ({
-          name: safeSheetName(`${session.programName} ${session.date}`),
+          name: safeSheetName(session.date),
           columns: [
             { header: t.attendance.colNo, width: 6 },
             { header: t.attendance.colName, width: 30 },
@@ -34,7 +34,7 @@ export default function AttendanceExportButton({
             i + 1,
             person.name,
             person.department,
-            session.programName,
+            person.program_name ?? "",
             session.date,
             "",
           ]),

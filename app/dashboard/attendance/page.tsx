@@ -48,10 +48,7 @@ export default async function AttendancePage() {
             <table className="w-full min-w-[38rem] text-start">
               <thead className="border-b border-line bg-white/40 text-xs font-semibold text-muted">
                 <tr>
-                  <th className="px-5 py-3 sm:px-6">
-                    {t.attendance.colProgram}
-                  </th>
-                  <th className="px-5 py-3">{t.attendance.colDate}</th>
+                  <th className="px-5 py-3 sm:px-6">{t.attendance.colDate}</th>
                   <th className="px-5 py-3">{t.attendance.colCount}</th>
                   <th className="px-5 py-3" />
                 </tr>
@@ -62,10 +59,7 @@ export default async function AttendancePage() {
                     key={session.key}
                     className="transition-colors hover:bg-white/55"
                   >
-                    <td className="px-5 py-4 font-semibold sm:px-6">
-                      {session.programName}
-                    </td>
-                    <td className="px-5 py-4 text-sm whitespace-nowrap text-muted">
+                    <td className="px-5 py-4 font-semibold whitespace-nowrap sm:px-6">
                       <bdi className="ltr-nums">{session.date}</bdi>
                     </td>
                     <td className="px-5 py-4 text-sm">
