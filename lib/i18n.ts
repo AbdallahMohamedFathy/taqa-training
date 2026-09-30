@@ -16,7 +16,6 @@ const ar = {
   signOut: "خروج",
   backToPrograms: "رجوع للبرامج",
   langLabel: "English",
-  settings: "أسماء البرامج",
 
   login: {
     title: "لوحة تحكم التدريب",
@@ -79,10 +78,6 @@ const ar = {
     title: "نموذج تقييم برنامج التدريب",
     subtitle: "Training Program Evaluation Form",
     programName: "اسم البرنامج",
-    choosePlaceholder: "— اختر الدورة —",
-    noProgramsTitle: "لسه مفيش دورات متاحة",
-    noProgramsBody:
-      "الموارد البشرية لسه ما ضافتش أسماء الدورات، فمش هينفع تبعت التقييم دلوقتي. كلّمهم وهما هيضيفوا دورتك.",
     programDate: "تاريخ البرنامج",
     instructorName: "اسم المدرب",
     optional: "(اختياري)",
@@ -105,22 +100,6 @@ const ar = {
     thankYouTitle: "تم استلام تقييمك",
     thankYouBody:
       "شكراً لتعاونك. ملاحظاتك هتساعدنا نحسّن البرامج التدريبية القادمة.",
-  },
-
-  catalog: {
-    title: "أسماء البرامج",
-    hint: "الأسماء دي هي اللي بتظهر للمتدرب في قائمة اختيار اسم البرنامج. ضيف الدورة هنا قبل ما تبعت اللينك.",
-    addPlaceholder: "اسم الدورة، مثلاً: السلامة المهنية في مواقع العمل",
-    add: "إضافة",
-    adding: "جارِ الإضافة…",
-    remove: "حذف",
-    empty: "لسه مفيش أسماء برامج. ضيف أول واحد عشان المتدربين يقدروا يختاروا.",
-    duplicate: "الاسم ده موجود بالفعل.",
-    addFailed: "حصل خطأ أثناء الإضافة.",
-    removeFailed: "حصل خطأ أثناء الحذف.",
-    confirmRemove: (name: string) =>
-      `تحذف "${name}" من القائمة؟ الردود القديمة مش هتتأثر.`,
-    usedIn: (n: number) => `${n} رد`,
   },
 
   attendance: {
@@ -179,7 +158,6 @@ const en: typeof ar = {
   signOut: "Sign out",
   backToPrograms: "Back to programs",
   langLabel: "العربية",
-  settings: "Program names",
 
   login: {
     title: "Training Dashboard",
@@ -242,10 +220,6 @@ const en: typeof ar = {
     title: "Training Program Evaluation Form",
     subtitle: "نموذج تقييم برنامج التدريب",
     programName: "Program Name",
-    choosePlaceholder: "— Choose your course —",
-    noProgramsTitle: "No courses available yet",
-    noProgramsBody:
-      "HR has not added any course names yet, so the form cannot be submitted. Please contact them and they will add your course.",
     programDate: "Program Date",
     instructorName: "Instructor Name",
     optional: "(optional)",
@@ -269,22 +243,6 @@ const en: typeof ar = {
     thankYouTitle: "Your evaluation was received",
     thankYouBody:
       "Thank you for your cooperation. Your feedback helps us improve future training programs.",
-  },
-
-  catalog: {
-    title: "Program names",
-    hint: "These are the names trainees choose from when filling the form. Add the course here before sharing the link.",
-    addPlaceholder: "Course name, e.g. Occupational Safety on Work Sites",
-    add: "Add",
-    adding: "Adding…",
-    remove: "Remove",
-    empty: "No program names yet. Add the first one so trainees have something to pick.",
-    duplicate: "That name is already in the list.",
-    addFailed: "Something went wrong while adding.",
-    removeFailed: "Something went wrong while removing.",
-    confirmRemove: (name: string) =>
-      `Remove "${name}" from the list? Existing responses are not affected.`,
-    usedIn: (n: number) => `${n} responses`,
   },
 
   attendance: {

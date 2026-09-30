@@ -6,7 +6,7 @@ import { useLang } from "@/components/LangProvider";
 import { RATING_MAX, RATING_MIN, SECTIONS, ALL_ITEMS } from "@/lib/form-schema";
 import { cleanText } from "@/lib/clean-text";
 import { createClient } from "@/lib/supabase/client";
-import type { Program, Ratings } from "@/lib/types";
+import type { Ratings } from "@/lib/types";
 
 const SCALE = Array.from(
   { length: RATING_MAX - RATING_MIN + 1 },
@@ -32,10 +32,8 @@ const saveToSupabase: SubmitHandler = async (payload) => {
 };
 
 export default function EvaluationForm({
-  programs,
   onSubmit = saveToSupabase,
 }: {
-  programs: Program[];
   onSubmit?: SubmitHandler;
 }) {
   const router = useRouter();
@@ -72,7 +70,7 @@ export default function EvaluationForm({
     event.preventDefault();
     setError(null);
 
-    if (!programName.trim() || !programDate) {
+    if (!cleanText(programName) || !programDate) {
       setError(t.form.errHeader);
       headerRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       return;
@@ -98,7 +96,7 @@ export default function EvaluationForm({
 
     setSubmitting(true);
     const { error: insertError } = await onSubmit({
-      program_name: programName.trim(),
+      program_name: cleanText(programName),
       program_date: programDate,
       instructors: instructors.map(cleanText).filter(Boolean),
       trainee_name: cleanText(traineeName),
@@ -113,26 +111,6 @@ export default function EvaluationForm({
     }
 
     router.push("/evaluate/thank-you");
-  }
-
-  // The course must come from HR's list, so with an empty list there is
-  // nothing valid to submit. Say so plainly instead of showing a dead form.
-  if (programs.length === 0) {
-    return (
-      <main className="mx-auto flex w-full max-w-lg flex-1 items-center px-4 py-16">
-        <div className="card w-full p-8 text-center sm:p-10">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-soft text-3xl">
-            📋
-          </div>
-          <h1 className="mt-5 text-xl font-extrabold">
-            {t.form.noProgramsTitle}
-          </h1>
-          <p className="mt-3 leading-relaxed text-muted">
-            {t.form.noProgramsBody}
-          </p>
-        </div>
-      </main>
-    );
   }
 
   return (
@@ -151,18 +129,12 @@ export default function EvaluationForm({
         <div className="grid gap-4 sm:grid-cols-2">
           <label className="block">
             <span className="text-sm font-medium">{t.form.programName}</span>
-            <select
+            <input
+              type="text"
               value={programName}
               onChange={(e) => setProgramName(e.target.value)}
               className={headerInputClass}
-            >
-              <option value="">{t.form.choosePlaceholder}</option>
-              {programs.map((program) => (
-                <option key={program.id} value={program.name}>
-                  {program.name}
-                </option>
-              ))}
-            </select>
+            />
           </label>
 
           <label className="block">

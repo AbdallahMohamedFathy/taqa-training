@@ -5,9 +5,8 @@ import { useState } from "react";
 import { useLang } from "@/components/LangProvider";
 import { cleanText } from "@/lib/clean-text";
 import { createClient } from "@/lib/supabase/client";
-import type { Program } from "@/lib/types";
 
-export default function AttendanceForm({ programs }: { programs: Program[] }) {
+export default function AttendanceForm() {
   const router = useRouter();
   const { t } = useLang();
 
@@ -24,7 +23,9 @@ export default function AttendanceForm({ programs }: { programs: Program[] }) {
     const cleanName = cleanText(name);
     const cleanDepartment = cleanText(department);
 
-    if (!programName || !cleanName || !cleanDepartment) {
+    const cleanProgram = cleanText(programName);
+
+    if (!cleanProgram || !cleanName || !cleanDepartment) {
       setError(t.attendance.errFields);
       return;
     }
@@ -33,7 +34,7 @@ export default function AttendanceForm({ programs }: { programs: Program[] }) {
     const { error: insertError } = await createClient()
       .from("attendance")
       .insert({
-        program_name: programName,
+        program_name: cleanProgram,
         name: cleanName,
         department: cleanDepartment,
       });
@@ -45,25 +46,6 @@ export default function AttendanceForm({ programs }: { programs: Program[] }) {
     }
 
     router.push("/attend/done");
-  }
-
-  // Without a course to attach the sign-in to there is nothing valid to save.
-  if (programs.length === 0) {
-    return (
-      <main className="mx-auto flex w-full max-w-lg flex-1 items-center px-4 py-16">
-        <div className="card w-full p-8 text-center sm:p-10">
-          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-brand-soft text-3xl">
-            📋
-          </div>
-          <h1 className="mt-5 text-xl font-extrabold">
-            {t.form.noProgramsTitle}
-          </h1>
-          <p className="mt-3 leading-relaxed text-muted">
-            {t.form.noProgramsBody}
-          </p>
-        </div>
-      </main>
-    );
   }
 
   return (
@@ -81,18 +63,12 @@ export default function AttendanceForm({ programs }: { programs: Program[] }) {
         <form onSubmit={handleSubmit} className="space-y-5 p-6 sm:p-8">
           <label className="block">
             <span className="text-sm font-medium">{t.form.programName}</span>
-            <select
+            <input
+              type="text"
               value={programName}
               onChange={(e) => setProgramName(e.target.value)}
               className="field mt-2"
-            >
-              <option value="">{t.form.choosePlaceholder}</option>
-              {programs.map((program) => (
-                <option key={program.id} value={program.name}>
-                  {program.name}
-                </option>
-              ))}
-            </select>
+            />
           </label>
 
           <label className="block">

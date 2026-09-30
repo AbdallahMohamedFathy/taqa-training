@@ -37,12 +37,6 @@ export default async function DashboardLayout({
             >
               {t.attendance.nav}
             </Link>
-            <Link
-              href="/dashboard/settings"
-              className="rounded-xl px-3 py-1.5 text-sm font-semibold text-brand transition-colors hover:bg-brand-soft"
-            >
-              {t.settings}
-            </Link>
             <span className="hidden text-sm text-muted md:inline" dir="ltr">
               {user?.email}
             </span>
